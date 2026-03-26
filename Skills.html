@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills — Vishnu Raj</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="Style.css">
+  <script src="chatbot.js"></script>
+  <style>
+    body { overflow-y: auto; }
+    body::before {
+      content:'';position:fixed;inset:0;
+      background-image:linear-gradient(rgba(0,230,118,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,118,0.03) 1px,transparent 1px);
+      background-size:44px 44px;pointer-events:none;z-index:0;
+    }
+    .page-wrap { max-width:1200px;margin:0 auto;padding:48px 24px 100px;position:relative;z-index:1; }
+    .page-header { margin-bottom:40px;animation:fadeInUp 0.5s ease both; }
+    .page-header .tag { font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px; }
+    .page-header h1 { font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--white); }
+    .page-header h1 span { color:var(--green); }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin-bottom:44px;
+      animation:fadeInUp 0.5s 0.1s ease both;
+    }
+    .filter-btn {
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 20px;border-radius:100px;
+      border:1.5px solid var(--border);background:transparent;
+      color:var(--text-dim);font-family:'Space Grotesk',sans-serif;
+      font-size:0.88rem;font-weight:600;cursor:pointer;transition:var(--transition);
+      white-space:nowrap;
+    }
+    .filter-btn i { font-size:0.82rem; }
+    .filter-btn:hover { border-color:var(--green);color:var(--green);background:var(--green-faint); }
+    .filter-btn.active {
+      background:var(--green);color:var(--bg);
+      border-color:var(--green);box-shadow:0 0 18px var(--green-glow);
+    }
+
+    /* CATEGORY BLOCK */
+    .cat-block { margin-bottom:52px;animation:fadeInUp 0.4s ease both; }
+    .cat-block.hidden { display:none; }
+    .cat-header {
+      display:flex;align-items:center;gap:14px;
+      margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border);
+    }
+    .cat-icon {
+      width:44px;height:44px;background:var(--green-faint);border:1px solid var(--border);
+      border-radius:12px;display:flex;align-items:center;justify-content:center;
+      color:var(--green);font-size:1.2rem;flex-shrink:0;
+    }
+    .cat-label h2 { font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:3px; }
+    .cat-label p { font-size:0.82rem;color:var(--text-muted); }
+
+    /* SKILL PILLS */
+    .skills-cloud { display:flex;flex-wrap:wrap;gap:12px; }
+    .skill-pill {
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 20px;background:var(--card);
+      border:1.5px solid var(--border);border-radius:14px;
+      transition:var(--transition);cursor:default;
+      animation:popIn 0.35s ease both;
+    }
+    @keyframes popIn { from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);} }
+    .skill-pill:hover {
+      border-color:var(--green);background:var(--green-faint);
+      box-shadow:0 0 18px var(--green-glow);transform:translateY(-3px);
+    }
+    .skill-pill i { color:var(--green);font-size:1rem; }
+    .skill-pill-name { font-size:0.92rem;font-weight:600;color:var(--text); }
+    .skill-pill-tag {
+      font-size:0.7rem;padding:2px 9px;border-radius:20px;
+      background:rgba(0,230,118,0.1);color:var(--green);
+      font-family:'JetBrains Mono',monospace;border:1px solid rgba(0,230,118,0.2);
+    }
+
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+    @media(max-width:600px){.skill-pill{padding:10px 14px;}.filter-btn{padding:8px 14px;font-size:0.82rem;}}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <div class="logo" onclick="window.location.href='index.html'">VISHNU <span>RAJ</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="Skills.html" class="active">Skills</a></li><li><a href="Project.html">Projects</a></li>
+      <li><a href="Services.html">Certifications</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="Skills.html" class="active">Skills</a><a href="Project.html">Projects</a>
+  <a href="Services.html">Certifications</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="page-wrap">
+  <div class="page-header">
+    <h1>My <span>Skills</span></h1>
+  </div>
+
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-cat="all" onclick="filterSkills('all')"><i class="fa-solid fa-border-all"></i> All Skills</button>
+    <button class="filter-btn" data-cat="programming" onclick="filterSkills('programming')"><i class="fa-solid fa-code"></i> Programming</button>
+    <button class="filter-btn" data-cat="web" onclick="filterSkills('web')"><i class="fa-solid fa-globe"></i> Web Dev</button>
+    <button class="filter-btn" data-cat="data" onclick="filterSkills('data')"><i class="fa-solid fa-chart-line"></i> Data & ML</button>
+    <button class="filter-btn" data-cat="tools" onclick="filterSkills('tools')"><i class="fa-solid fa-toolbox"></i> Tools</button>
+  </div>
+
+  <div class="cat-block" data-cat="programming">
+    <div class="cat-header">
+      <div class="cat-icon"><i class="fa-solid fa-code"></i></div>
+      <div class="cat-label"><h2>Programming Languages</h2><p>Foundation languages for problem-solving and software development</p></div>
+    </div>
+    <div class="skills-cloud">
+      <div class="skill-pill"><i class="fa-brands fa-cuttlefish"></i><span class="skill-pill-name">C++</span><span class="skill-pill-tag">Advanced</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-c"></i><span class="skill-pill-name">C</span><span class="skill-pill-tag">Proficient</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-python"></i><span class="skill-pill-name">Python</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-java"></i><span class="skill-pill-name">Java</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-sitemap"></i><span class="skill-pill-name">DSA</span><span class="skill-pill-tag">Proficient</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-cube"></i><span class="skill-pill-name">OOP</span><span class="skill-pill-tag">Advanced</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-hashtag"></i><span class="skill-pill-name">C#</span><span class="skill-pill-tag">Intermediate</span></div>
+    </div>
+  </div>
+
+  <div class="cat-block" data-cat="web">
+    <div class="cat-header">
+      <div class="cat-icon"><i class="fa-solid fa-globe"></i></div>
+      <div class="cat-label"><h2>Web Development</h2><p>Modern technologies for building responsive, interactive web apps</p></div>
+    </div>
+    <div class="skills-cloud">
+      <div class="skill-pill"><i class="fa-brands fa-html5"></i><span class="skill-pill-name">HTML5</span><span class="skill-pill-tag">Expert</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-css3-alt"></i><span class="skill-pill-name">CSS3</span><span class="skill-pill-tag">Advanced</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-js"></i><span class="skill-pill-name">JavaScript</span><span class="skill-pill-tag">Advanced</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-react"></i><span class="skill-pill-name">React</span><span class="skill-pill-tag">Learning</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-mobile-screen"></i><span class="skill-pill-name">Flutter</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-server"></i><span class="skill-pill-name">Node.js</span><span class="skill-pill-tag">Learning</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-fire"></i><span class="skill-pill-name">Firestore</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-database"></i><span class="skill-pill-name">MySQL</span><span class="skill-pill-tag">Basic</span></div>
+    </div>
+  </div>
+
+  <div class="cat-block" data-cat="data">
+    <div class="cat-header">
+      <div class="cat-icon"><i class="fa-solid fa-chart-line"></i></div>
+      <div class="cat-label"><h2>Data Science & Machine Learning</h2><p>Analytics, visualization, and predictive modeling libraries</p></div>
+    </div>
+    <div class="skills-cloud">
+      <div class="skill-pill"><i class="fa-solid fa-table"></i><span class="skill-pill-name">Pandas</span><span class="skill-pill-tag">Proficient</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-calculator"></i><span class="skill-pill-name">NumPy</span><span class="skill-pill-tag">Proficient</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-chart-area"></i><span class="skill-pill-name">Matplotlib</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-brain"></i><span class="skill-pill-name">Scikit-Learn</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-chart-bar"></i><span class="skill-pill-name">Seaborn</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-laptop-code"></i><span class="skill-pill-name">Jupyter Notebook</span><span class="skill-pill-tag">Proficient</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-robot"></i><span class="skill-pill-name">Machine Learning</span><span class="skill-pill-tag">Learning</span></div>
+    </div>
+  </div>
+
+  <div class="cat-block" data-cat="tools">
+    <div class="cat-header">
+      <div class="cat-icon"><i class="fa-solid fa-toolbox"></i></div>
+      <div class="cat-label"><h2>Tools & Platforms</h2><p>Productivity, design, and system administration tools</p></div>
+    </div>
+    <div class="skills-cloud">
+      <div class="skill-pill"><i class="fa-solid fa-file-excel"></i><span class="skill-pill-name">MS Excel</span><span class="skill-pill-tag">Advanced</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-chart-pie"></i><span class="skill-pill-name">Power BI</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-linux"></i><span class="skill-pill-name">Linux</span><span class="skill-pill-tag">Proficient</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-skull-crossbones"></i><span class="skill-pill-name">Kali Linux</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-figma"></i><span class="skill-pill-name">Figma</span><span class="skill-pill-tag">Intermediate</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-git-alt"></i><span class="skill-pill-name">Git</span><span class="skill-pill-tag">Proficient</span></div>
+      <div class="skill-pill"><i class="fa-brands fa-github"></i><span class="skill-pill-name">GitHub</span><span class="skill-pill-tag">Proficient</span></div>
+      <div class="skill-pill"><i class="fa-solid fa-code"></i><span class="skill-pill-name">VS Code</span><span class="skill-pill-tag">Daily Use</span></div>
+    </div>
+  </div>
+</div>
+<script src="chatbot.js"></script>
+
+<script>
+function toggleMenu(){document.getElementById('hamburger').classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open');}
+document.addEventListener('click',e=>{const m=document.getElementById('mobileMenu'),h=document.getElementById('hamburger');if(!m.contains(e.target)&&!h.contains(e.target)){m.classList.remove('open');h.classList.remove('open');}});
+
+function filterSkills(cat) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+  document.querySelectorAll('.cat-block').forEach(block=>{
+    const show = cat==='all'||block.dataset.cat===cat;
+    if(show){ block.classList.remove('hidden'); block.style.animation='none'; block.offsetHeight; block.style.animation='fadeInUp 0.4s ease both'; }
+    else block.classList.add('hidden');
+  });
+}
+</script>
+</body>
+</html>

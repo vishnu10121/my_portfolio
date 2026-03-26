@@ -1,0 +1,250 @@
+/* =============================================
+   VISHNU RAJ PORTFOLIO — SHARED STYLES
+   Theme: Dark Cyber-Green | Fully Responsive
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+  --green: #00e676;
+  --green-dim: #077b32;
+  --green-glow: rgba(0, 230, 118, 0.3);
+  --green-faint: rgba(0, 230, 118, 0.07);
+  --bg: #020c07;
+  --bg2: #060f0a;
+  --card: rgba(0, 230, 118, 0.04);
+  --border: rgba(0, 230, 118, 0.18);
+  --text: #e8f5e9;
+  --text-dim: #81c784;
+  --text-muted: #4a7c59;
+  --white: #ffffff;
+  --nav-h: 68px;
+  --radius: 14px;
+  --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--green-dim); border-radius: 10px; }
+
+/* ==================== NAV ==================== */
+nav {
+  width: 100%;
+  height: var(--nav-h);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(2, 12, 7, 0.92);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--white);
+  cursor: pointer;
+  letter-spacing: -0.5px;
+  user-select: none;
+  transition: var(--transition);
+}
+.logo:hover { opacity: 0.85; }
+.logo span {
+  color: var(--green);
+  text-shadow: 0 0 12px var(--green-glow);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+
+.nav-links a {
+  position: relative;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: var(--transition);
+  letter-spacing: 0.3px;
+}
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--green);
+  background: var(--green-faint);
+}
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 50%;
+  transform: translateX(-50%);
+  width: 18px; height: 2px;
+  background: var(--green);
+  border-radius: 2px;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  background: var(--green-faint);
+  border: 1px solid var(--border);
+}
+.hamburger span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--green);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* Mobile Menu */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0;
+  background: rgba(2, 12, 7, 0.98);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 998;
+  padding: 20px 24px;
+  flex-direction: column;
+  gap: 4px;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: var(--transition);
+}
+.mobile-menu.open {
+  display: flex;
+  transform: translateY(0);
+  opacity: 1;
+}
+.mobile-menu a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 14px 16px;
+  border-radius: 10px;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+.mobile-menu a:hover,
+.mobile-menu a.active {
+  color: var(--green);
+  background: var(--green-faint);
+  border-color: var(--border);
+}
+
+/* ==================== BUTTONS ==================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  border: none;
+  outline: none;
+}
+.btn-primary {
+  background: var(--green);
+  color: var(--bg);
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--green);
+  box-shadow: 0 0 24px var(--green-glow), inset 0 0 0 2px var(--green);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--green);
+  box-shadow: inset 0 0 0 1.5px var(--green);
+}
+.btn-outline:hover {
+  background: var(--green);
+  color: var(--bg);
+  box-shadow: 0 0 24px var(--green-glow);
+}
+
+/* ==================== SECTION TITLE ==================== */
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.section-title span { color: var(--green); }
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 48px;
+}
+
+/* ==================== CARDS ==================== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: var(--transition);
+}
+.card:hover {
+  border-color: var(--green);
+  box-shadow: 0 0 24px var(--green-glow);
+  transform: translateY(-4px);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .nav-container { padding: 0 16px; }
+}

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vishnu Raj — Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="chatbot.js"></script>
+  <style>
+    /* ===== HOME PAGE SPECIFIC ===== */
+    body { overflow: hidden; }
+
+    @media (max-width: 768px) { body { overflow-y: auto; } }
+
+    /* Background Grid */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,230,118,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,230,118,0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    section {
+      width: 100%;
+      height: calc(100vh - var(--nav-h));
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 48px;
+      width: 100%;
+    }
+
+    /* Left content */
+    .hero-content { flex: 1; max-width: 560px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-faint);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      color: var(--green);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease both;
+    }
+    .hero-badge .dot {
+      width: 9px; height: 10px;
+      background: var(--green);
+      border-radius: 61%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero-name {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 12px;
+      animation: fadeInUp 0.6s 0.1s ease both;
+    }
+    .hero-name span { color: var(--green); text-shadow: 0 0 30px var(--green-glow); }
+
+    .hero-role {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-bottom: 18px;
+      min-height: 2rem;
+      animation: fadeInUp 0.6s 0.2s ease both;
+    }
+    .typewriter-text { color: var(--green); }
+    .typewriter-text::after {
+      content: '|';
+      animation: blink 0.7s infinite;
+      color: var(--green);
+    }
+    @keyframes blink { 0%,50%,100%{opacity:1} 25%,75%{opacity:0} }
+
+    .hero-desc {
+      font-size: 1.23rem;
+      line-height: 1.75;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.6s 0.3s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s 0.4s ease both;
+    }
+
+    .social-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      animation: fadeInUp 0.6s 0.5s ease both;
+      flex-wrap: wrap;
+    }
+    .social-row a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--green-faint);
+      border: 1px solid var(--border);
+      color: var(--green);
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .social-row a:hover {
+      background: var(--green);
+      color: var(--bg);
+      box-shadow: 0 0 18px var(--green-glow);
+      transform: translateY(-3px);
+    }
+    .coding-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Right – image */
+    .hero-image-wrap {
+      flex-shrink: 0;
+      width: 340px; height: 340px;
+      position: relative;
+      animation: fadeIn 1s 0.2s ease both;
+    }
+    .hero-image-ring {
+      position: absolute; inset: -14px;
+      border-radius: 50%;
+      border: 2px dashed rgba(0,230,118,0.25);
+      animation: spin 18s linear infinite;
+    }
+    .hero-image-ring2 {
+      position: absolute; inset: -28px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,230,118,0.1);
+      animation: spin 30s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hero-image-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--green);
+      box-shadow: 0 0 60px var(--green-glow), 0 0 120px rgba(0,230,118,0.1);
+      background: linear-gradient(135deg, #0a2616 0%, var(--bg) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-image-inner img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .hero-image-placeholder {
+      font-size: 6rem;
+      opacity: 0.3;
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: flex;
+      gap: 20px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s 0.55s ease both;
+    }
+    .stat {
+      text-align: center;
+      padding: 12px 18px;
+      background: var(--green-faint);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(24px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; }
+      to { opacity:1; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero { padding: 0 24px; gap: 32px; }
+      .hero-image-wrap { width: 280px; height: 280px; }
+    }
+    @media (max-width: 768px) {
+      section { height: auto; padding: 40px 0 60px; }
+      .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 0 20px;
+        gap: 32px;
+      }
+      .hero-content { max-width: 100%; }
+      .hero-image-wrap { width: 220px; height: 220px; }
+      .hero-actions { justify-content: center; }
+      .social-row { justify-content: center; }
+      .stats-row { justify-content: center; }
+      .hero-badge { margin: 0 auto 20px; }
+    }
+    @media (max-width: 480px) {
+      .hero-image-wrap { width: 180px; height: 180px; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .btn { width: 100%; justify-content: center; }
+      .social-row { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="logo" onclick="window.location.href='index.html'">
+      VISHNU <span>RAJ</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="Skills.html">Skills</a></li>
+      <li><a href="project.html">Projects</a></li>
+      <li><a href="services.html">Certifications</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" class="active">Home</a>
+  <a href="about.html">About</a>
+  <a href="Skills.html">Skills</a>
+  <a href="project.html">Projects</a>
+  <a href="services.html">Certifications</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section>
+  <div class="hero">
+    <!-- Content -->
+    <div class="hero-content">
+      <div class="hero-badge">
+      <span class="dot"></span>
+      <h2><span class="dot" style="width:auto;height:auto;background:none;">Available for opportunities</span></h2>
+
+      </div>
+
+      <h1 class="hero-name">
+        Hey, I'm<br><span>Vishnu Raj</span>
+      </h1>
+
+      <div class="hero-role">
+        I'm a <span class="typewriter-text"></span>
+      </div>
+
+      <p class="hero-desc">
+        Computer Science Engineering student at LPU, passionate about building impactful digital solutions. Specializing in full-stack development, machine learning, and data analysis.
+      </p>
+
+      <div class="hero-actions">
+        <a href="mailto:vishnuraj.40132@gmail.com" class="btn btn-primary">
+          <i class="fa-solid fa-envelope"></i> Hire Me
+        </a>
+        <a href="vishnu raj 5 sem result cv.pdf" download class="btn btn-outline">
+          <i class="fa-solid fa-download"></i> Download CV
+        </a>
+      </div>
+
+      <div class="social-row">
+        <a href="https://github.com/Vishnuraj-1012" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/vishnu-raj-925132283/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="mailto:vishnuraj.40132@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+
+      <div class="stats-row">
+
+  <!-- Row 1 -->
+  <div style="width:100%; display:flex; gap:20px; flex-wrap:wrap;">
+    
+    <a href="https://leetcode.com/u/vishnu_1012/" target="_blank" style="text-decoration:none;">
+      <div class="stat">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">leetcode question</div>
+      </div>
+    </a>
+
+    <a href="https://www.geeksforgeeks.org/profile/vishnura0e5y?tab=activity" target="_blank" style="text-decoration:none;">
+      <div class="stat">
+        <div class="stat-num">100+</div>
+        <div class="stat-label">gfg question</div>
+      </div>
+    </a>
+
+  </div>
+
+
+  <!-- Row 2 -->
+  <div style="width:100%; display:flex; gap:20px; flex-wrap:wrap; margin-top:20px;">
+    
+    <div class="stat">
+      <div class="stat-num">3+</div>
+      <div class="stat-label">Internships</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-num">7+</div>
+      <div class="stat-label">Projects</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-num">25+</div>
+      <div class="stat-label">Certifications</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-num">7.43</div>
+      <div class="stat-label">CGPA</div>
+      <div class="stat-label">UPTO 5 SEM</div>
+    </div>
+
+  </div>
+
+      </div>
+    </div>
+    
+
+    <!-- Image -->
+    <div class="hero-image-wrap">
+      <div class="hero-image-ring"></div>
+      <div class="hero-image-ring2"></div>
+      <div class="hero-image-inner">
+        <img src="FM0_0243.JPG" alt="Vishnu Raj"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="hero-image-placeholder" style="display:none">👨‍💻</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <script src="script.js"></script> -->
+<script src="Chatbot.js"></script>
+ 
+
+<script>
+// Nav menu
+function toggleMenu() {
+  const ham = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  ham.classList.toggle('open');
+  menu.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const menu = document.getElementById('mobileMenu');
+  const ham = document.getElementById('hamburger');
+  if (!menu.contains(e.target) && !ham.contains(e.target)) {
+    menu.classList.remove('open');
+    ham.classList.remove('open');
+  }
+});
+
+// Typewriter
+const texts = ["Full Stack Developer","Machine Learning Enthusiast","Data Analyst","CSE Student @ LPU","Building Scalable Web Apps"];
+let tIdx=0, cIdx=0;
+const el = document.querySelector('.typewriter-text');
+function type(){
+  if(cIdx < texts[tIdx].length){
+    el.textContent = texts[tIdx].slice(0,++cIdx);
+    setTimeout(type, 90);
+  } else setTimeout(erase, 1800);
+}
+function erase(){
+  if(cIdx > 0){
+    el.textContent = texts[tIdx].slice(0,--cIdx);
+    setTimeout(erase, 45);
+  } else { tIdx=(tIdx+1)%texts.length; setTimeout(type,400); }
+}
+window.addEventListener('load', type);
+</script>
+</body>
+</html>

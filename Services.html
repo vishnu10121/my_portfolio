@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certifications — Vishnu Raj</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="Style.css">
+  <script src="chatbot.js"></script>
+  <style>
+    body { overflow-y: auto; }
+    body::before {
+      content:'';position:fixed;inset:0;
+      background-image:linear-gradient(rgba(0,230,118,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,118,0.03) 1px,transparent 1px);
+      background-size:44px 44px;pointer-events:none;z-index:0;
+    }
+    .page-wrap { max-width:1200px;margin:0 auto;padding:48px 24px 100px;position:relative;z-index:1; }
+    .page-header { margin-bottom:40px;animation:fadeInUp 0.5s ease both; }
+    .page-header .tag { font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px; }
+    .page-header h1 { font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--white); }
+    .page-header h1 span { color:var(--green); }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin-bottom:44px;animation:fadeInUp 0.5s 0.1s ease both;
+    }
+    .filter-btn {
+      display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:100px;
+      border:1.5px solid var(--border);background:transparent;color:var(--text-dim);
+      font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:600;
+      cursor:pointer;transition:var(--transition);white-space:nowrap;
+    }
+    .filter-btn i { font-size:0.82rem; }
+    .filter-btn:hover { border-color:var(--green);color:var(--green);background:var(--green-faint); }
+    .filter-btn.active { background:var(--green);color:var(--bg);border-color:var(--green);box-shadow:0 0 18px var(--green-glow); }
+
+    /* CERT SECTION */
+    .cert-section { margin-bottom:48px;animation:fadeInUp 0.4s ease both; }
+    .cert-section.hidden { display:none; }
+
+    .sec-header {
+      display:flex;align-items:center;gap:12px;
+      margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);
+    }
+    .sec-icon {
+      width:40px;height:40px;background:var(--green-faint);border:1px solid var(--border);
+      border-radius:10px;display:flex;align-items:center;justify-content:center;
+      color:var(--green);font-size:1rem;flex-shrink:0;
+    }
+    .sec-title h2 { font-size:1.1rem;font-weight:700;color:var(--white); }
+    .sec-title p { font-size:0.8rem;color:var(--text-muted);margin-top:2px; }
+    .cert-count {
+      margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:0.75rem;
+      color:var(--green);background:var(--green-faint);padding:3px 12px;
+      border-radius:20px;border:1px solid var(--border);flex-shrink:0;
+    }
+
+    /* CERT GRID */
+    .cert-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px; }
+
+    .cert-card {
+      display:flex;align-items:center;gap:14px;
+      background:var(--card);border:1px solid var(--border);
+      border-radius:14px;padding:16px 18px;
+      text-decoration:none;transition:var(--transition);
+      animation:popIn 0.35s ease both;
+    }
+    .cert-card:hover {
+      border-color:var(--green);box-shadow:0 0 20px var(--green-glow);
+      transform:translateY(-3px);
+    }
+    @keyframes popIn { from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);} }
+
+    .cert-logo {
+      width:42px;height:42px;flex-shrink:0;border-radius:10px;
+      background:var(--green-faint);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--green);font-size:1.1rem;
+    }
+    .cert-info { flex:1;min-width:0; }
+    .cert-name { font-size:0.88rem;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3; }
+    .cert-issuer { font-size:0.75rem;color:var(--text-muted); }
+    .cert-arrow { color:var(--green);font-size:0.78rem;flex-shrink:0;opacity:0;transition:var(--transition); }
+    .cert-card:hover .cert-arrow { opacity:1;transform:translateX(3px); }
+
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+    @media(max-width:480px){.cert-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <div class="logo" onclick="window.location.href='index.html'">VISHNU <span>RAJ</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="Skills.html">Skills</a></li><li><a href="Project.html">Projects</a></li>
+      <li><a href="Services.html" class="active">Certifications</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="Skills.html">Skills</a><a href="Project.html">Projects</a>
+  <a href="Services.html" class="active">Certifications</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="page-wrap">
+  <div class="page-header">
+    <div class="tag">// achievements</div>
+    <h1>My <span>Certifications</span></h1>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-cat="all" onclick="filterCerts('all')"><i class="fa-solid fa-border-all"></i> All</button>
+    <button class="filter-btn" data-cat="industrial" onclick="filterCerts('industrial')"><i class="fa-solid fa-industry"></i> Industrial</button>
+    <button class="filter-btn" data-cat="programming" onclick="filterCerts('programming')"><i class="fa-solid fa-code"></i> Programming</button>
+    <button class="filter-btn" data-cat="webdev" onclick="filterCerts('webdev')"><i class="fa-solid fa-globe"></i> Web Dev</button>
+    <button class="filter-btn" data-cat="networks" onclick="filterCerts('networks')"><i class="fa-solid fa-network-wired"></i> Networks</button>
+    <button class="filter-btn" data-cat="practice" onclick="filterCerts('practice')"><i class="fa-solid fa-trophy"></i> Coding Practice</button>
+    <button class="filter-btn" data-cat="other" onclick="filterCerts('other')"><i class="fa-solid fa-star"></i> Others</button>
+  </div>
+
+  <!-- Industrial -->
+  <div class="cert-section" data-cat="industrial">
+    <div class="sec-header">
+      <div class="sec-icon"><i class="fa-solid fa-industry"></i></div>
+      <div class="sec-title"><h2>Industrial Certifications</h2><p>From top tech companies</p></div>
+      <span class="cert-count">7 certs</span>
+    </div>
+    <div class="cert-grid">
+      <a class="cert-card" href="https://drive.google.com/file/d/11fz5sg5J9zGo8JzD9W5xF4SXME1mDhcM/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-certificate"></i></div><div class="cert-info"><div class="cert-name">Data Science Professional</div><div class="cert-issuer">Oracle</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1QRrO-wLSXxs_yiexi9TrNVTqN68apB8u/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-robot"></i></div><div class="cert-info"><div class="cert-name">Generative AI</div><div class="cert-issuer">Oracle</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1qmqhboQgnCWZxQTFXWpFV-ej4FdMA6ZR/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-globe"></i></div><div class="cert-info"><div class="cert-name">Web Development</div><div class="cert-issuer">IBM</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1MPLbCcLZnJMTDPH4uyuMnTbNoo1kP__A/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-brain"></i></div><div class="cert-info"><div class="cert-name">AI Fundamentals</div><div class="cert-issuer">IBM</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1HiB276oBLIYpzBJWUzWl7Q9Iy9bBaugN/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-lock"></i></div><div class="cert-info"><div class="cert-name">Privacy & Security in Online Social Media</div><div class="cert-issuer">NPTEL</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1Uqq8A4ffC0DpaM1EIVSKWvIrbf0F794S/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-diagram-project"></i></div><div class="cert-info"><div class="cert-name">Computational Theory & Automata</div><div class="cert-issuer">Infosys</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1-J-5Q0ie7N_9I6U5dtVgfGVULZwEaaLX/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-chart-line"></i></div><div class="cert-info"><div class="cert-name">Data Analysis</div><div class="cert-issuer">Cognitive Class</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+  </div>
+
+  <!-- Programming -->
+  <div class="cert-section" data-cat="programming">
+    <div class="sec-header">
+      <div class="sec-icon"><i class="fa-solid fa-code"></i></div>
+      <div class="sec-title"><h2>Programming Certificates</h2><p>Language-specific certifications</p></div>
+      <span class="cert-count">5 certs</span>
+    </div>
+    <div class="cert-grid">
+      <a class="cert-card" href="https://drive.google.com/file/d/13UGyFGbEL8KDZ4fTMYH_srlY1lvePt1W/view" target="_blank"><div class="cert-logo"><i class="fa-brands fa-python"></i></div><div class="cert-info"><div class="cert-name">Python (Beginner to Advanced)</div><div class="cert-issuer">Udemy</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1eB1a90ehd40myjyxFUBN_XXe_jeBGdE_/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-c"></i></div><div class="cert-info"><div class="cert-name">C Programming</div><div class="cert-issuer">Cipher School</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1u8lxP82Q7msgoeshXt5BTkFZee_iMulg/view" target="_blank"><div class="cert-logo"><i class="fa-brands fa-python"></i></div><div class="cert-info"><div class="cert-name">Python (Basic)</div><div class="cert-issuer">HackerRank</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1JCnlh2e0D5FLSlIGRTfDfqX6QtHi_j1b/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-c"></i></div><div class="cert-info"><div class="cert-name">C for Beginners</div><div class="cert-issuer">Great Learning</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1Shi31iy4Jk6FUE96F5aKsm1RHuO2b2Qt/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-terminal"></i></div><div class="cert-info"><div class="cert-name">Mastering C (Basic to Advanced)</div><div class="cert-issuer">CSE Pathsala</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+  </div>
+
+  <!-- Web Dev -->
+  <div class="cert-section" data-cat="webdev">
+    <div class="sec-header">
+      <div class="sec-icon"><i class="fa-solid fa-laptop-code"></i></div>
+      <div class="sec-title"><h2>Web Development Certificates</h2><p>Frontend & design certifications</p></div>
+      <span class="cert-count">3 certs</span>
+    </div>
+    <div class="cert-grid">
+      <a class="cert-card" href="https://drive.google.com/file/d/14KJa_jxi6cvhS0Fd3iuOJQm73CxsJD_1/view" target="_blank"><div class="cert-logo"><i class="fa-brands fa-free-code-camp"></i></div><div class="cert-info"><div class="cert-name">Responsive Web Design</div><div class="cert-issuer">freeCodeCamp</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1FjZIpK7tkZPg5BUCpdZb5a5K8FpU6Y0v/view" target="_blank"><div class="cert-logo"><i class="fa-brands fa-html5"></i></div><div class="cert-info"><div class="cert-name">HTML5 Basic to Advanced</div><div class="cert-issuer">Eyoda</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1FQEM8GtmDGqmPPLTlaoeVsnJWoA9Dsdm/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-pen-ruler"></i></div><div class="cert-info"><div class="cert-name">UI/UX Design</div><div class="cert-issuer">LPU</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+  </div>
+
+  <!-- Networks -->
+  <div class="cert-section" data-cat="networks">
+    <div class="sec-header">
+      <div class="sec-icon"><i class="fa-solid fa-network-wired"></i></div>
+      <div class="sec-title"><h2>Computer Networks</h2><p>Networking fundamentals & protocols</p></div>
+      <span class="cert-count">5 certs</span>
+    </div>
+    <div class="cert-grid">
+      <a class="cert-card" href="https://drive.google.com/file/d/1Wbt6rvehYWEueXy-U4I5igeEwVNBv-kE/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-server"></i></div><div class="cert-info"><div class="cert-name">TCP/IP and Advanced Topics</div><div class="cert-issuer">Coursera</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1rG9fZAZvlgl71adcFVFsLke_kshypRPX/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-wifi"></i></div><div class="cert-info"><div class="cert-name">Bits and Bytes of Computer Networking</div><div class="cert-issuer">Coursera</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1mykP3tSeOJUMNqMCTDp4rDm2hrAojwpO/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-diagram-project"></i></div><div class="cert-info"><div class="cert-name">Packet Switching Networks & Algorithms</div><div class="cert-issuer">Coursera</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1A8YJS_yfDKbJKZL2-LfXks_n23k95oZ-/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-tower-broadcast"></i></div><div class="cert-info"><div class="cert-name">Peer-to-Peer Protocols and LAN</div><div class="cert-issuer">Coursera</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1snaPZU5o6K3_ip9ZrS6CKjdWP4-a9_d4/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-plug"></i></div><div class="cert-info"><div class="cert-name">Fundamentals of Network Communication</div><div class="cert-issuer">Coursera</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+  </div>
+
+  <!-- Coding Practice -->
+  <div class="cert-section" data-cat="practice">
+    <div class="sec-header">
+      <div class="sec-icon"><i class="fa-solid fa-trophy"></i></div>
+      <div class="sec-title"><h2>Coding Practice Certificates</h2><p>Platform-based assessments</p></div>
+      <span class="cert-count">5 certs</span>
+    </div>
+    <div class="cert-grid">
+      <a class="cert-card" href="https://drive.google.com/file/d/1u8lxP82Q7msgoeshXt5BTkFZee_iMulg/view" target="_blank"><div class="cert-logo"><i class="fa-brands fa-python"></i></div><div class="cert-info"><div class="cert-name">Python</div><div class="cert-issuer">HackerRank / Codetantra</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1Subz1yCzly4myx8KtXz6CP2hUCDFHk7h/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-c"></i></div><div class="cert-info"><div class="cert-name">C</div><div class="cert-issuer">iamneo LPU</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1F7wCmYOyeFUUbSQjGWZC62ollAD1ZX5r/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-terminal"></i></div><div class="cert-info"><div class="cert-name">C++</div><div class="cert-issuer">iamneo LPU</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/1wG8V9xpNlcXxWGx1LmQadJyOv4cidRlV/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-sitemap"></i></div><div class="cert-info"><div class="cert-name">DSA</div><div class="cert-issuer">iamneo LPU</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="#" target="_blank"><div class="cert-logo"><i class="fa-brands fa-java"></i></div><div class="cert-info"><div class="cert-name">Java</div><div class="cert-issuer">iamneo LPU</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+  </div>
+
+  <!-- Others -->
+  <div class="cert-section" data-cat="other">
+    <div class="sec-header">
+      <div class="sec-icon"><i class="fa-solid fa-star"></i></div>
+      <div class="sec-title"><h2>Communication & Analytics</h2><p>Language, soft skills, and marketing</p></div>
+      <span class="cert-count">2 certs</span>
+    </div>
+    <div class="cert-grid">
+      <a class="cert-card" href="https://drive.google.com/file/d/15Om4voUA8fPtkXlstYLkPbQ42W6LN29o/view" target="_blank"><div class="cert-logo"><i class="fa-solid fa-language"></i></div><div class="cert-info"><div class="cert-name">English Grammar Pro (A1–C1)</div><div class="cert-issuer">Udemy</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+      <a class="cert-card" href="https://drive.google.com/file/d/14KJa_jxi6cvhS0Fd3iuOJQm73CxsJD_1/view" target="_blank"><div class="cert-logo"><i class="fa-brands fa-google"></i></div><div class="cert-info"><div class="cert-name">Google Analytics & GTM</div><div class="cert-issuer">Udemy</div></div><i class="cert-arrow fa-solid fa-arrow-up-right-from-square"></i></a>
+    </div>
+  </div>
+</div>
+
+<script src="chatbot.js"></script>
+<script>
+function toggleMenu(){document.getElementById('hamburger').classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open');}
+document.addEventListener('click',e=>{const m=document.getElementById('mobileMenu'),h=document.getElementById('hamburger');if(!m.contains(e.target)&&!h.contains(e.target)){m.classList.remove('open');h.classList.remove('open');}});
+
+function filterCerts(cat) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+  document.querySelectorAll('.cert-section').forEach(sec=>{
+    const show = cat==='all'||sec.dataset.cat===cat;
+    if(show){ sec.classList.remove('hidden'); sec.style.animation='none'; sec.offsetHeight; sec.style.animation='fadeInUp 0.4s ease both'; }
+    else sec.classList.add('hidden');
+  });
+}
+</script>
+</body>
+</html>

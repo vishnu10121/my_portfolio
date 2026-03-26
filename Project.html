@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Vishnu Raj</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="Style.css">
+  <script src="chatbot.js"></script>
+  <style>
+    body { overflow-y: auto; }
+    body::before {
+      content:'';position:fixed;inset:0;
+      background-image:linear-gradient(rgba(0,230,118,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,118,0.03) 1px,transparent 1px);
+      background-size:44px 44px;pointer-events:none;z-index:0;
+    }
+    .page-wrap { max-width:1200px;margin:0 auto;padding:48px 24px 100px;position:relative;z-index:1; }
+    .page-header { margin-bottom:40px;animation:fadeInUp 0.5s ease both; }
+    .page-header .tag { font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px; }
+    .page-header h1 { font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--white); }
+    .page-header h1 span { color:var(--green); }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin-bottom:44px;animation:fadeInUp 0.5s 0.1s ease both;
+    }
+    .filter-btn {
+      display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:100px;
+      border:1.5px solid var(--border);background:transparent;color:var(--text-dim);
+      font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:600;
+      cursor:pointer;transition:var(--transition);white-space:nowrap;
+    }
+    .filter-btn i { font-size:0.82rem; }
+    .filter-btn:hover { border-color:var(--green);color:var(--green);background:var(--green-faint); }
+    .filter-btn.active { background:var(--green);color:var(--bg);border-color:var(--green);box-shadow:0 0 18px var(--green-glow); }
+
+    /* COUNT BADGE */
+    .count-badge {
+      font-family:'JetBrains Mono',monospace;font-size:0.75rem;
+      color:var(--green);background:var(--green-faint);padding:2px 8px;
+      border-radius:20px;border:1px solid var(--border);margin-left:4px;
+    }
+
+    /* PROJECTS GRID */
+    .projects-grid {
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+      gap:24px;
+    }
+
+    .project-card {
+      background:var(--card);border:1px solid var(--border);border-radius:16px;
+      overflow:hidden;cursor:pointer;transition:var(--transition);
+      animation:popIn 0.4s ease both;
+    }
+    .project-card.hidden { display:none; }
+    .project-card:hover { border-color:var(--green);box-shadow:0 0 30px var(--green-glow);transform:translateY(-6px); }
+    @keyframes popIn { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+
+    .project-img {
+      width:100%;height:190px;object-fit:cover;display:block;
+      background:linear-gradient(135deg,#0a2616,var(--bg));
+    }
+
+    /* IMAGE PLACEHOLDER — replaces emoji */
+    .project-img-fallback {
+      width:100%;height:190px;display:none;
+      flex-direction:column;align-items:center;justify-content:center;gap:10px;
+      background:linear-gradient(135deg,rgba(0,230,118,0.06) 0%,rgba(0,0,0,0.3) 100%);
+      border-bottom:1px solid var(--border);
+      position:relative;overflow:hidden;
+    }
+    .project-img-fallback::before {
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 60% 40%,rgba(0,230,118,0.10) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .project-img-fallback .ph-icon {
+      font-size:2.6rem;color:var(--green);opacity:0.75;
+      filter:drop-shadow(0 0 14px rgba(0,230,118,0.4));
+    }
+    .project-img-fallback .ph-label {
+      font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+      color:var(--green);opacity:0.55;letter-spacing:1.5px;text-transform:uppercase;
+    }
+
+    /* MODAL image fallback */
+    .modal-img-fallback {
+      width:100%;height:250px;display:none;
+      flex-direction:column;align-items:center;justify-content:center;gap:14px;
+      background:linear-gradient(135deg,rgba(0,230,118,0.07) 0%,rgba(0,0,0,0.35) 100%);
+      border-bottom:1px solid var(--border);
+      position:relative;overflow:hidden;
+    }
+    .modal-img-fallback::before {
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 55% 40%,rgba(0,230,118,0.12) 0%,transparent 70%);
+    }
+    .modal-img-fallback .ph-icon {
+      font-size:3.8rem;color:var(--green);opacity:0.8;
+      filter:drop-shadow(0 0 20px rgba(0,230,118,0.45));
+    }
+    .modal-img-fallback .ph-label {
+      font-family:'JetBrains Mono',monospace;font-size:0.78rem;
+      color:var(--green);opacity:0.55;letter-spacing:2px;text-transform:uppercase;
+    }
+
+    .project-body { padding:20px 22px 22px; }
+    .project-cats { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px; }
+    .project-cat-tag {
+      font-size:0.7rem;padding:3px 10px;border-radius:20px;
+      background:var(--green-faint);color:var(--green);
+      border:1px solid var(--border);font-family:'JetBrains Mono',monospace;
+    }
+    .project-title { font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:7px; }
+    .project-desc { font-size:0.83rem;color:var(--text-muted);line-height:1.65;margin-bottom:18px; }
+    .project-footer { display:flex;align-items:center;justify-content:space-between; }
+    .project-tech { font-size:0.75rem;color:var(--text-muted); }
+    .project-tech span { color:var(--green);font-weight:600; }
+    .project-open {
+      width:34px;height:34px;border-radius:9px;
+      background:var(--green-faint);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--green);font-size:0.85rem;transition:var(--transition);
+    }
+    .project-card:hover .project-open { background:var(--green);color:var(--bg); }
+
+    /* MODAL */
+    .modal-overlay {
+      display:none;position:fixed;inset:0;
+      background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);
+      z-index:9000;align-items:center;justify-content:center;padding:20px;
+    }
+    .modal-overlay.open { display:flex; }
+    .modal-box {
+      background:var(--bg2);border:1px solid var(--border);border-radius:20px;
+      width:100%;max-width:580px;overflow:hidden;position:relative;
+      animation:modalIn 0.3s ease;
+    }
+    @keyframes modalIn { from{opacity:0;transform:scale(0.9) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);} }
+    .modal-img { width:100%;height:250px;object-fit:cover;display:block;background:linear-gradient(135deg,#0a2616,var(--bg)); }
+    .modal-body { padding:26px; }
+    .modal-cats { display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px; }
+    .modal-title { font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:10px; }
+    .modal-desc { font-size:0.9rem;color:var(--text-muted);line-height:1.72;margin-bottom:16px; }
+    .modal-tech {
+      font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--green);
+      background:var(--green-faint);padding:10px 16px;border-radius:10px;
+      border:1px solid var(--border);margin-bottom:22px;
+    }
+    .modal-actions { display:flex;gap:12px;flex-wrap:wrap;align-items:center; }
+    .modal-close {
+      position:absolute;top:14px;right:14px;width:36px;height:36px;
+      background:rgba(0,0,0,0.7);border:1px solid var(--border);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      color:var(--text-dim);font-size:1.1rem;cursor:pointer;transition:var(--transition);
+    }
+    .modal-close:hover { background:var(--green);color:var(--bg); }
+
+    /* ── LIVE DEMO BUTTON ── */
+    .btn-live-demo {
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 20px;border-radius:10px;
+      background:transparent;
+      border:2px solid var(--green);
+      color:var(--green);
+      font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:700;
+      cursor:pointer;text-decoration:none;
+      position:relative;overflow:hidden;
+      transition:background 0.25s, color 0.25s, box-shadow 0.25s;
+    }
+    .btn-live-demo:hover {
+      background:var(--green);color:var(--bg);
+      box-shadow:0 0 22px var(--green-glow);
+    }
+    .btn-live-demo .live-dot {
+      width:9px;height:9px;border-radius:50%;
+      background:var(--green);
+      display:inline-block;flex-shrink:0;
+      animation:liveBlink 1.1s ease-in-out infinite;
+    }
+    .btn-live-demo:hover .live-dot { background:var(--bg); }
+    @keyframes liveBlink {
+      0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(0,230,118,0.55); }
+      50%      { opacity:0.25; box-shadow:0 0 0 5px rgba(0,230,118,0); }
+    }
+    .btn-live-demo .live-label {
+      font-size:0.62rem;letter-spacing:1.5px;
+      padding:1px 6px;border-radius:4px;
+      background:var(--green);color:var(--bg);
+      font-weight:800;
+      animation:labelPulse 1.1s ease-in-out infinite;
+    }
+    .btn-live-demo:hover .live-label { background:var(--bg);color:var(--green); }
+    @keyframes labelPulse {
+      0%,100% { opacity:1; }
+      50%      { opacity:0.45; }
+    }
+
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+    @media(max-width:520px){ .projects-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <div class="logo" onclick="window.location.href='index.html'">VISHNU <span>RAJ</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="Skills.html">Skills</a></li><li><a href="Project.html" class="active">Projects</a></li>
+      <li><a href="Services.html">Certifications</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="Skills.html">Skills</a><a href="Project.html" class="active">Projects</a>
+  <a href="Services.html">Certifications</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="page-wrap">
+  <div class="page-header">
+    <div class="tag">// my work</div>
+    <h1>My <span>Projects</span></h1>
+  </div>
+
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-cat="all" onclick="filterProjects('all')">
+      <i class="fa-solid fa-border-all"></i> All <span class="count-badge" id="cnt-all">7</span>
+    </button>
+    <button class="filter-btn" data-cat="web" onclick="filterProjects('web')">
+      <i class="fa-solid fa-globe"></i> Web Dev
+    </button>
+    <button class="filter-btn" data-cat="ml" onclick="filterProjects('ml')">
+      <i class="fa-solid fa-brain"></i> ML / AI
+    </button>
+    <button class="filter-btn" data-cat="data" onclick="filterProjects('data')">
+      <i class="fa-solid fa-chart-bar"></i> Data Analysis
+    </button>
+    <button class="filter-btn" data-cat="fullstack" onclick="filterProjects('fullstack')">
+      <i class="fa-solid fa-layer-group"></i> Full Stack
+    </button>
+  </div>
+
+  <div class="projects-grid" id="projectsGrid"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeModalDirect()"><i class="fa-solid fa-xmark"></i></div>
+    <img id="modalImg" class="modal-img" src="" alt=""
+      onerror="this.style.display='none';document.getElementById('modalFallback').style.display='flex'">
+    <div id="modalFallback" class="modal-img-fallback" style="display:none">
+      <i id="modalFallbackIcon" class="ph-icon"></i>
+      <span id="modalFallbackLabel" class="ph-label"></span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-cats" id="modalCats"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-tech" id="modalTech"></div>
+      <div class="modal-actions">
+        <a id="modalLink" href="#" target="_blank" class="btn btn-primary">
+          <i class="fa-brands fa-github"></i> View on GitHub
+        </a>
+        <a id="modalDemo" href="#" target="_blank" class="btn-live-demo">
+          <span class="live-dot"></span>
+          <span class="live-label">LIVE</span>
+          Live Demo
+          <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.78rem;"></i>
+        </a>
+        <button class="btn btn-outline" onclick="closeModalDirect()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="chatbot.js"></script>
+<script>
+const projects = [
+  {
+    title:'Raj Gym Tech',
+    img:'gym photo.avif',           // 🔁 Put your own image filename here
+    icon:'fa-solid fa-dumbbell',
+    iconLabel:'Raj Gym Tech',
+    desc:'A comprehensive full-stack fitness tracking platform featuring workout logging, health metrics tracking, and exercise planning. Built with a modern tech stack for scalability.',
+    tech:'Next.js · React · Node.js · Express · MongoDB',
+    tags:['fullstack','web'],
+    cats:['Full Stack','Web Dev'],
+    link:'https://github.com/Vishnuraj-1012',
+    demo:'#'   // 🔁 Replace with your live URL
+  },
+  {
+    title:'EcoVish Foundation',
+    img:'naturephoto.jpg',          // 🔁 Put your own image filename here
+    icon:'fa-solid fa-leaf',
+    iconLabel:'EcoVish Foundation',
+    desc:'A nature conservation platform to raise awareness, manage eco-projects, and connect volunteers with environmental causes.',
+    tech:'HTML · CSS · JavaScript',
+    tags:['web'],
+    cats:['Web Dev'],
+    link:'https://github.com/Vishnuraj-1012',
+    demo:'#'
+  },
+  {
+    title:'Flight Data Analysis',
+    img:'flight_new_OG_tag.png',    // 🔁 Put your own image filename here
+    icon:'fa-solid fa-plane',
+    iconLabel:'flight_new_OG_tag.png',
+    desc:'Exploratory data analysis of airline trends, delays, pricing patterns, and route optimization using Python data science libraries.',
+    tech:'Python · Pandas · Matplotlib · NumPy · Seaborn',
+    tags:['data','ml'],
+    cats:['Data Analysis','ML/AI'],
+    link:'https://github.com/Vishnuraj-1012',
+    demo:'#'
+  },
+  {
+    title:'Crypto Price Prediction',
+    img:'crypto.png',               // 🔁 Put your own image filename here
+    icon:'fa-solid fa-coins',
+    iconLabel:'Crypto Prediction',
+    desc:'Predicting cryptocurrency price trends using time-series forecasting and machine learning models with historical data analysis.',
+    tech:'Python · Scikit-Learn · Pandas · ML',
+    tags:['ml','data'],
+    cats:['ML/AI','Data Analysis'],
+    link:'https://github.com/Vishnuraj-1012',
+    demo:'#'
+  },
+  {
+    title:'Bank Loan Prediction',
+    img:'Bank.jpg',                 // 🔁 Put your own image filename here
+    icon:'fa-solid fa-building-columns',
+    iconLabel:'Bank Loan Prediction',
+    desc:'Classification model to determine loan eligibility based on customer profiles, credit history, and financial indicators.',
+    tech:'Python · Scikit-Learn · Pandas · ML',
+    tags:['ml','data'],
+    cats:['ML/AI','Data Analysis'],
+    link:'https://github.com/Vishnuraj-1012',
+    demo:'#'
+  },
+  {
+    title:'CodeClimb',
+    img:'image.png',           // 🔁 Put your own image filename here
+    icon:'fa-solid fa-code',
+    iconLabel:'CodeClimb',
+    desc:'An interactive platform for developers to practice coding challenges, track progress, and level up their programming skills.',
+    tech:'React · CSS · JavaScript',
+    tags:['web','fullstack'],
+    cats:['Web Dev','Full Stack'],
+    link:'https://github.com/Vishnuraj-1012',
+    demo:'#'
+  },
+  {
+    title:'Global Terrorism Dashboard',
+    img:'terr.jpg',                 // 🔁 Put your own image filename here
+    icon:'fa-solid fa-chart-bar',
+    iconLabel:'Terrorism Dashboard',
+    desc:'Interactive Power BI dashboard visualizing global terrorism data, trends, geographic distribution, and incident patterns.',
+    tech:'Power BI · DAX · Data Analytics',
+    tags:['data'],
+    cats:['Data Analysis'],
+    link:'https://github.com/Vishnuraj-1012',
+    demo:'#'
+  }
+];
+
+let currentFilter = 'all';
+
+function renderProjects(cat) {
+  const grid = document.getElementById('projectsGrid');
+  const filtered = cat === 'all' ? projects : projects.filter(p => p.tags.includes(cat));
+  grid.innerHTML = filtered.map((p, i) => `
+    <div class="project-card" onclick="openModal('${p.title}')" style="animation-delay:${i*0.07}s">
+      <img class="project-img" src="${p.img}" alt="${p.title}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="project-img-fallback" style="display:none">
+        <i class="${p.icon} ph-icon"></i>
+        <span class="ph-label">${p.iconLabel}</span>
+      </div>
+      <div class="project-body">
+        <div class="project-cats">${p.cats.map(c=>`<span class="project-cat-tag">${c}</span>`).join('')}</div>
+        <div class="project-title">${p.title}</div>
+        <div class="project-desc">${p.desc.substring(0,100)}...</div>
+        <div class="project-footer">
+          <div class="project-tech">Stack: <span>${p.tech.split('·')[0].trim()}</span> + more</div>
+          <div class="project-open"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterProjects(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+  renderProjects(cat);
+}
+
+function openModal(title) {
+  const p = projects.find(x=>x.title===title);
+  document.getElementById('modalImg').src = p.img;
+  document.getElementById('modalImg').style.display = 'block';
+  document.getElementById('modalFallback').style.display = 'none';
+  document.getElementById('modalFallbackIcon').className = p.icon + ' ph-icon';
+  document.getElementById('modalFallbackLabel').textContent = p.iconLabel;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.getElementById('modalTech').textContent = '🛠 ' + p.tech;
+  document.getElementById('modalCats').innerHTML = p.cats.map(c=>`<span class="project-cat-tag">${c}</span>`).join('');
+  document.getElementById('modalLink').href = p.link;
+  document.getElementById('modalDemo').href = p.demo;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e){ if(e.target===document.getElementById('modal')) closeModalDirect(); }
+function closeModalDirect(){ document.getElementById('modal').classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModalDirect(); });
+
+function toggleMenu(){document.getElementById('hamburger').classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open');}
+document.addEventListener('click',e=>{
+  const m=document.getElementById('mobileMenu'),h=document.getElementById('hamburger');
+  if(!m.contains(e.target)&&!h.contains(e.target)){m.classList.remove('open');h.classList.remove('open');}
+});
+
+renderProjects('all');
+</script>
+</body>
+</html>

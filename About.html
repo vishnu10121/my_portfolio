@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Vishnu Raj</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="chatbot.js"></script>
+  <style>
+    body { overflow-y: auto; }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,230,118,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,230,118,0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .page-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      position: relative; z-index: 1;
+    }
+
+    /* Page header */
+    .page-header {
+      margin-bottom: 40px;
+      animation: fadeInUp 0.5s ease both;
+    }
+    .page-header .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--green);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .page-header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--white);
+    }
+    .page-header h1 span { color: var(--green); }
+    .page-header p {
+      margin-top: 10px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Who I Am */
+    .who-box {
+      background: var(--green-faint);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--green);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.5s 0.1s ease both;
+    }
+    .who-box p {
+      line-height: 1.8;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+    .who-box p:last-child { margin-bottom: 0; }
+    .highlight { color: var(--green); font-weight: 600; }
+
+    /* Section label */
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      margin-top: 40px;
+    }
+    .sec-label h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .sec-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Education */
+    .edu-grid { display: flex; flex-direction: column; gap: 14px; }
+    .edu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      transition: var(--transition);
+      animation: fadeInUp 0.5s ease both;
+    }
+    .edu-item:hover {
+      border-color: var(--green);
+      transform: translateX(6px);
+      box-shadow: 0 0 20px var(--green-glow);
+    }
+    .edu-left h3 { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+    .edu-left p { font-size: 0.85rem; color: var(--text-muted); }
+    .edu-right {
+      text-align: right;
+      padding-left: 20px;
+      border-left: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .edu-right .year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--green);
+      font-weight: 700;
+    }
+    .edu-right .grade {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Experience Timeline */
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--green), transparent);
+    }
+    .exp-item {
+      position: relative;
+      margin-bottom: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: var(--transition);
+      animation: fadeInUp 0.5s ease both;
+    }
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: -29px; top: 22px;
+      width: 10px; height: 10px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+    }
+    .exp-item:hover {
+      border-color: var(--green);
+      box-shadow: 0 0 20px var(--green-glow);
+      transform: translateX(4px);
+    }
+    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+    .exp-header h3 { font-size: 1rem; font-weight: 700; color: var(--white); }
+    .exp-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--green);
+      background: var(--green-faint);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .exp-role { font-size: 0.85rem; color: var(--green); margin-bottom: 12px; font-weight: 500; }
+    .exp-item ul { padding-left: 18px; }
+    .exp-item ul li {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 4px;
+    }
+
+    /* Download */
+    .download-wrap {
+      margin-top: 48px;
+      text-align: center;
+      animation: fadeInUp 0.5s 0.3s ease both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(20px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .edu-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .edu-right { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 10px; text-align: left; width: 100%; }
+      .exp-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <div class="logo" onclick="window.location.href='index.html'">VISHNU <span>RAJ</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="Skills.html">Skills</a></li>
+      <li><a href="project.html">Projects</a></li>
+      <li><a href="services.html">Certifications</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="about.html" class="active">About</a>
+  <a href="Skills.html">Skills</a>
+  <a href="project.html">Projects</a>
+  <a href="services.html">Certifications</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<div class="page-wrap">
+  <div class="page-header">
+    <h1>About <span>Me</span></h1>
+    <p>A little bit about who I am and what I do.</p>
+  </div>
+
+  <div class="who-box">
+    <p>Hello! I'm <span class="highlight">Vishnu Raj</span>, a Computer Science Engineering student at Lovely Professional University with a strong interest in software development and building impactful digital solutions. I enjoy transforming ideas into functional, user-friendly applications that solve real-world problems.</p>
+    <p>During my internship at <span class="highlight">UX Bounty</span>, I worked on a live project in collaboration with Apollo Tyres — contributing to UI/UX design using Figma, cross-platform development with Flutter, and backend management with Firestore.</p>
+    <p>I am particularly interested in <span class="highlight">full-stack development</span> and continuously work on enhancing my skills in modern web technologies and problem-solving. My goal is to grow as a software developer and contribute to building scalable, high-quality solutions.</p>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="sec-label"><h2><i class="fa-solid fa-graduation-cap" style="color:var(--green);margin-right:8px"></i>Education</h2></div>
+  <div class="edu-grid">
+    <div class="edu-item">
+      <div class="edu-left">
+        <h3>Lovely Professional University</h3>
+        <p>B.Tech — Computer Science Engineering</p>
+      </div>
+      <div class="edu-right">
+        <div class="year">2023 – 2027</div>
+        <div class="grade"><h3>CGPA: 7.43</h3></div>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-left">
+        <h3>Sahodaya Senior Secondary School</h3>
+        <p>Class 12 — Science</p>
+      </div>
+      <div class="edu-right">
+        <div class="year">2022 – 2023</div>
+        <div class="grade"><h3>77%</h3></div>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-left">
+        <h3>Sahodaya Senior Secondary School</h3>
+        <p>Class 11 — Science</p>
+      </div>
+      <div class="edu-right">
+        <div class="year">2021 – 2022</div>
+        <div class="grade"><h3>89%</h3></div>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-left">
+        <h3>Sahodaya Senior Secondary School</h3>
+        <p>Class 10</p>
+      </div>
+      <div class="edu-right">
+        <div class="year">2020 – 2021</div>
+        <div class="grade"><h3>84%</h3></div>
+      </div>
+    </div>
+  </div>
+  <!-- EXPERIENCE -->
+<div class="sec-label">
+  <h2>
+    <i class="fa-solid fa-briefcase" style="color:var(--green);margin-right:8px"></i>
+    Experience
+  </h2>
+</div>
+
+<div class="timeline">
+
+  <div class="exp-item" style="position:relative;">
+
+    <div class="exp-header">
+      <h3>
+        UX Bounty
+        <span class="dot" style="display:inline-block;margin-right:8px;"></span>
+      </h3>
+      <span class="exp-date">Jun 2025 – Sep 2025</span>
+    </div>
+
+    <div class="exp-role">Software Development Intern</div>
+
+    <ul>
+      <li>Worked on a live project in collaboration with Apollo Tyres Ltd.</li>
+      <li>Designed UI/UX interfaces using Figma for improved user experience.</li>
+      <li>Developed application features using Flutter and integrated Firestore database.</li>
+      <li>Collaborated in an agile development environment.</li>
+    </ul>
+
+    <a href="https://drive.google.com/file/d/1FzNcGghOUWyj57-Ci5R5SjZBJkTb1zrr/view?usp=sharing" target="_blank"
+      style="position:absolute;bottom:14px;right:14px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--green-faint);border:1px solid var(--border);color:var(--green);text-decoration:none;">
+      <i class="fa-solid fa-up-right-from-square"></i>
+    </a>
+
+  </div>
+
+
+
+  <div class="exp-item" style="position:relative;">
+
+    <div class="exp-header">
+      <h3>CodeClause
+        <span class="dot" style="display:inline-block;margin-right:8px;"></span>
+        
+      </h3>
+      <span class="exp-date">Jun 2024 – Jul 2024</span>
+    </div>
+
+    <div class="exp-role">Python Developer Intern</div>
+
+    <ul>
+      <li>Developed a typing speed calculator to measure words per minute (WPM).</li>
+      <li>Built a voice recorder application using Python.</li>
+      <li>Improved debugging and real-world problem-solving skills.</li>
+    </ul>
+
+    <a href="https://drive.google.com/file/d/1STwdKIQzngu-l6qnGURkan7zYonFfWZt/view?usp=sharing" target="_blank"
+      style="position:absolute;bottom:14px;right:14px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--green-faint);border:1px solid var(--border);color:var(--green);text-decoration:none;">
+      <i class="fa-solid fa-up-right-from-square"></i>
+    </a>
+
+  </div>
+
+
+
+  <div class="exp-item" style="position:relative;">
+
+    <div class="exp-header">
+      <h3>Sankalp Education & Social Welfare Trust
+        <span class="dot" style="display:inline-block;margin-right:8px;"></span>
+      </h3>
+      <span class="exp-date">Jul 2024</span>
+    </div>
+
+    <div class="exp-role">Volunteer</div>
+
+    <ul>
+      <li>Contributed 36+ hours towards education and community welfare initiatives.</li>
+      <li>Supported activities for underprivileged students.</li>
+      <li>Developed teamwork and communication skills.</li>
+    </ul>
+
+    <a href="#" target="_blank"
+      style="position:absolute;bottom:14px;right:14px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--green-faint);border:1px solid var(--border);color:var(--green);text-decoration:none;">
+      <i class="fa-solid fa-up-right-from-square"></i>
+    </a>
+
+  </div>
+
+</div>
+  <div class="download-wrap">
+    <a href="vishnu raj 5 sem result cv.pdf" download class="btn btn-primary" style="font-size:1rem;padding:14px 32px;">
+      <i class="fa-solid fa-download"></i> Download CV
+    </a>
+  </div>
+</div>
+<script src="chatbot.js"></script>
+
+<script>
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  const m=document.getElementById('mobileMenu'),h=document.getElementById('hamburger');
+  if(!m.contains(e.target)&&!h.contains(e.target)){m.classList.remove('open');h.classList.remove('open');}
+});
+</script>
+</body>
+</html>
